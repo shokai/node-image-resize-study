@@ -10,5 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "gm": "^1.23.1"
+  },
+  "devDependencies": {
+    "sharp": "^0.25.4"
   }
 }
