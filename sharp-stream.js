@@ -4,7 +4,9 @@ const fs = require('fs')
 const path = require('path')
 const sharp = require('sharp')
 
-const resize = sharp().resize(400, null, { withoutEnlargement: true })
+const resize = sharp()
+  .rotate() // https://sharp.pixelplumbing.com/api-operation#rotate
+  .resize(400, null, { withoutEnlargement: true }) // https://sharp.pixelplumbing.com/api-resize#resize
 
 async function main () {
   let [ , , srcPath, destPath] = process.argv
