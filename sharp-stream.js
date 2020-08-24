@@ -4,6 +4,14 @@ const fs = require('fs')
 const path = require('path')
 const sharp = require('sharp')
 
+const createResizeStream = () => sharp()
+  .rotate() // remove Exif Orientation and fix data
+  .resize(1000, null, {
+    withoutEnlargement: true, // https://sharp.pixelplumbing.com/api-resize#resize
+    //kernel: 'nearest'
+    kernel: 'lanczos3'
+  })
+
 async function main () {
   let [ , , srcPath, destPath] = process.argv
   if (!destPath) {
@@ -15,10 +23,7 @@ async function main () {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(srcPath)
     const writeStream = fs.createWriteStream(destPath)
-    const resize = sharp()
-      .rotate() // https://sharp.pixelplumbing.com/api-operation#rotate
-      .resize(400, null, { withoutEnlargement: true }) // https://sharp.pixelplumbing.com/api-resize#resize
-    readStream.pipe(resize).pipe(writeStream)
+    readStream.pipe(createResizeStream()).pipe(writeStream)
     writeStream
       .once('error', reject)
       .once('finish', resolve)
