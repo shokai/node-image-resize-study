@@ -6,7 +6,8 @@ const sharp = require('sharp')
 
 const createResizeStream = () => sharp()
   .rotate() // remove Exif Orientation and fix data
-  .resize(1000, null, {
+  .resize(1000, 1000, {
+    fit: 'inside',
     withoutEnlargement: true, // https://sharp.pixelplumbing.com/api-resize#resize
     //kernel: 'nearest'
     kernel: 'lanczos3'

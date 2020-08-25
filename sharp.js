@@ -11,22 +11,13 @@ async function main () {
   }
 
   console.log('source', srcPath)
-  try {
-    const srcImg = sharp(srcPath)
-    const {width, height} = await srcImg.metadata()
-    console.log({width, height})
-    if (width > 400 || height > 400) {
-      console.log('resize')
-      await srcImg.resize(400).toFile(destPath)
-    } else {
-      console.log('copy')
-      await fs.copyFile(srcPath, destPath)
-    }
-    console.log('done')
-  } catch (err) {
-    console.error(err)
-  }
+  const srcImg = sharp(srcPath)
+  await srcImg.resize(1000, 1000, {
+    fit: 'inside',
+    withoutEnlargement: true,
+    //kernel: 'nearest'
+    kernel: 'lanczos3'
+  }).toFile(destPath)
 }
 
-main()
-
+main().catch(console.error)
