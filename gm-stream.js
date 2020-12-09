@@ -13,6 +13,7 @@ async function main () {
   const writeStream = fs.createWriteStream(destPath)
   gm(readStream)
     .resize(1000, 1000, '>')
+    .autoOrient() // remove Exif Orientation and fix data
     .stream()
     .pipe(writeStream)
 }
